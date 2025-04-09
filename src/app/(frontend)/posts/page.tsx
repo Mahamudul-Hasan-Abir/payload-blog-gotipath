@@ -1,68 +1,3 @@
-// import type { Metadata } from 'next/types'
-
-// import { CollectionArchive } from '@/components/CollectionArchive'
-// import { PageRange } from '@/components/PageRange'
-// import { Pagination } from '@/components/Pagination'
-// import configPromise from '@payload-config'
-// import { getPayload } from 'payload'
-// import React from 'react'
-// import PageClient from './page.client'
-
-// export const dynamic = 'force-static'
-// export const revalidate = 600
-
-// export default async function Page() {
-//   const payload = await getPayload({ config: configPromise })
-
-//   const posts = await payload.find({
-//     collection: 'posts',
-//     depth: 1,
-//     limit: 12,
-//     overrideAccess: false,
-//     select: {
-//       title: true,
-//       slug: true,
-//       categories: true,
-//       meta: true,
-//     },
-//   })
-
-//   return (
-//     <div className=" pb-24">
-//       <PageClient />
-//       <div className="container mb-16">
-//         <div className="prose dark:prose-invert max-w-none">
-//           <h1>Introducing Gotipath Integrations</h1>
-//           <p className="mt-5 text-neutral-500 sm:text-lg">Latest news and updates from Gotipath</p>
-//         </div>
-//       </div>
-//       <div className="container mb-8">
-//         <PageRange
-//           collection="posts"
-//           currentPage={posts.page}
-//           limit={12}
-//           totalDocs={posts.totalDocs}
-//         />
-//       </div>
-//       <CollectionArchive posts={posts.docs} />
-
-//       <div className="container">
-//         {posts.totalPages > 1 && posts.page && (
-//           <Pagination page={posts.page} totalPages={posts.totalPages} />
-//         )}
-//       </div>
-//     </div>
-//   )
-// }
-
-// export function generateMetadata(): Metadata {
-//   return {
-//     title: `Payload Website Template Posts`,
-//   }
-// }
-
-// -----------
-
 import type { Metadata } from 'next/types'
 
 import { PageRange } from '@/components/PageRange'
@@ -106,8 +41,31 @@ export default async function Page() {
   return (
     <div className="pb-24">
       <PageClient />
-
-      <div className="container mb-16">
+      <svg
+        className="pointer-events-none absolute inset-[unset] left-1/2 top-0 h-80 w-full -translate-x-1/2 text-neutral-300/50 [mask-image:radial-gradient(70%_60%_at_50%_60%,black_30%,transparent)] max-sm:opacity-50"
+        width="100%"
+        height="100%"
+      >
+        <defs>
+          <pattern
+            id="grid-«R5drminb»"
+            x="35"
+            y="43"
+            width="80"
+            height="80"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M 80 0 L 0 0 0 80"
+              fill="transparent"
+              stroke="currentColor"
+              strokeWidth="1"
+            ></path>
+          </pattern>
+        </defs>
+        <rect fill="url(#grid-«R5drminb»)" width="100%" height="100%"></rect>
+      </svg>
+      <div className="container mb-16 relative">
         <div className="prose dark:prose-invert max-w-none">
           <h1>Introducing Gotipath Integrations</h1>
           <p className="mt-5 text-neutral-500 sm:text-lg">Latest news and updates from Gotipath</p>
