@@ -26,16 +26,17 @@ export default async function Page() {
       meta: true,
     },
   })
+  console.log(posts)
 
   return (
-    <div className="pt-24 pb-24">
+    <div className=" pb-24">
       <PageClient />
       <div className="container mb-16">
         <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
+          <h1>Introducing Gotipath Integrations</h1>
+          <p className="mt-5 text-neutral-500 sm:text-lg">Latest news and updates from Gotipath</p>
         </div>
       </div>
-
       <div className="container mb-8">
         <PageRange
           collection="posts"
@@ -44,7 +45,6 @@ export default async function Page() {
           totalDocs={posts.totalDocs}
         />
       </div>
-
       <CollectionArchive posts={posts.docs} />
 
       <div className="container">
