@@ -14,6 +14,8 @@ import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import DubHero from '@/heros/DubHero/DubHero'
+import TableOfContent from '@/components/TableOfContent/TableOfContent'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -47,24 +49,39 @@ export default async function Post({ params: paramsPromise }: Args) {
   const url = '/posts/' + slug
   const post = await queryPostBySlug({ slug })
   // console.log('consolingSlug', slug)
-  console.log(post)
+  console.log('RichText', post?.content)
 
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16">
-      <PageClient />
+    <article className="pt-16 pb-16 ">
+      <div className=" flex justify-end container ">
+        <div className=" max-w-[48rem] col-span-2 mx-auto">
+          {/* <PageClient /> */}
 
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
+          {/* Allows redirects for valid pages too */}
+          <PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewListener />}
+          {draft && <LivePreviewListener />}
 
-      <PostHero post={post} />
+          <DubHero post={post} />
 
+          {/* <PostHero post={post} /> */}
+
+          <div className="flex flex-col items-center gap-4 pt-8">
+            <div className="container">
+              <RichText data={post.content} enableGutter={false} />
+            </div>
+          </div>
+        </div>
+        <div className=" col-span-1 hidden lg:block">
+          <TableOfContent></TableOfContent>
+        </div>
+
+        {/* Div for Table of Content */}
+      </div>
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
           {post.relatedPosts && post.relatedPosts.length > 0 && (
             <RelatedPosts
               className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
