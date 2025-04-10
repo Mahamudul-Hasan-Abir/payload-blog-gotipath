@@ -65,14 +65,14 @@ export default async function Page() {
         </defs>
         <rect fill="url(#grid-«R5drminb»)" width="100%" height="100%"></rect>
       </svg>
-      <div className="container mb-16 relative">
+      <div className=" mb-16 relative">
         <div className="prose dark:prose-invert max-w-none">
           <h1>Introducing Gotipath Integrations</h1>
           <p className="mt-5 text-neutral-500 sm:text-lg">Latest news and updates from Gotipath</p>
         </div>
       </div>
 
-      <div className="container mb-8">
+      <div className=" mb-8">
         <PageRange
           collection="posts"
           currentPage={postsRes.page}

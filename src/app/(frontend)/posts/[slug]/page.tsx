@@ -54,9 +54,10 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16 ">
-      <div className=" flex justify-end container ">
-        <div className=" max-w-[48rem] col-span-2 mx-auto">
+    <article className="pt-16 pb-16 relative overflow-hidden">
+      <div className="absolute -z-10 top-[70vh] h-[calc(100%-13rem)] w-full border-t border-neutral-200 bg-gradient-to-b from-neutral-50"></div>
+      <div className="max-w-7xl mx-auto px-3">
+        <div>
           {/* <PageClient /> */}
 
           {/* Allows redirects for valid pages too */}
@@ -69,19 +70,24 @@ export default async function Post({ params: paramsPromise }: Args) {
           {/* <PostHero post={post} /> */}
 
           <div className="flex flex-col items-center gap-4 pt-8">
-            <div className="container">
+            <div>
               <RichText data={post.content} enableGutter={false} />
             </div>
           </div>
         </div>
-        <div className=" col-span-1 hidden lg:block">
-          <TableOfContent></TableOfContent>
-        </div>
 
+        <div className="w-full">
+          {post.relatedPosts && post.relatedPosts.length > 0 && (
+            <RelatedPosts
+              className="mt-12 w-full"
+              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
+            />
+          )}
+        </div>
         {/* Div for Table of Content */}
       </div>
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
+      {/* <div className="flex flex-col items-center gap-4 pt-8">
+        <div>
           {post.relatedPosts && post.relatedPosts.length > 0 && (
             <RelatedPosts
               className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
@@ -89,7 +95,7 @@ export default async function Post({ params: paramsPromise }: Args) {
             />
           )}
         </div>
-      </div>
+      </div> */}
     </article>
   )
 }
