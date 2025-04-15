@@ -1,66 +1,81 @@
-'use client'
+import { Menu } from 'lucide-react'
+import Image from 'next/image'
 
-import { useState } from 'react'
+export default function TableOfContent(post) {
+  const richTextHeading = post?.post?.content?.root?.children || []
+  const extractHeadingText = (tag) => {
+    return tag?.children[0]?.text || 'Untitled Heading'
+  }
 
-import Link from 'next/link'
-import { cn } from '@/utilities/ui'
-
-const TableOfContent = () => {
-  const [activeSection, setActiveSection] = useState('day-1')
-
-  const tableOfContents = [
-    { id: 'day-1', title: 'Day 1: Introducing Dub Conversions' },
-    { id: 'day-2', title: 'Day 2: Introducing Webhooks' },
-    { id: 'day-3', title: 'Day 3: Unveiling our new About page' },
-    { id: 'celebrating', title: 'Celebrating 1 year of Dub' },
-  ]
   return (
-    <div className="sticky top-10 mt-[30vh] self-start">
-      <div className="flex items-center gap-2 text-gray-500">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="lucide lucide-list"
-        >
-          <line x1="8" x2="21" y1="6" y2="6" />
-          <line x1="8" x2="21" y1="12" y2="12" />
-          <line x1="8" x2="21" y1="18" y2="18" />
-          <line x1="3" x2="3" y1="6" y2="6" />
-          <line x1="3" x2="3" y1="12" y2="12" />
-          <line x1="3" x2="3" y1="18" y2="18" />
-        </svg>
-        <h3 className="text-xl font-normal">On this page</h3>
+    <div className="max-w-md p-6  rounded-lg ">
+      {/* Author section */}
+      <div className="mb-10">
+        <h2 className="text-sm text-neutral-500 mb-4">Written by</h2>
+        <div className="flex items-center gap-3">
+          <div className="relative size-9 ">
+            <Image
+              src="/placeholder.svg?height=64&width=64"
+              alt="Arvind Kesh"
+              fill
+              className="rounded-full border-2 border-yellow-400"
+            />
+          </div>
+          <div>
+            <h3 className="whitespace-nowrap text-sm font-medium text-neutral-700">Arvind Kesh</h3>
+            <p className="text-sm text-neutral-500">Content Marketer</p>
+          </div>
+        </div>
       </div>
 
-      <nav className="border-l border-gray-200 pl-4 mt-5">
-        <ul className="space-y-4">
-          {tableOfContents.map((item) => (
-            <li key={item.id}>
-              <Link
-                href={`#${item.id}`}
-                className={cn(
-                  'block text-lg transition-colors',
-                  activeSection === item.id
-                    ? 'font-medium text-gray-900'
-                    : 'text-gray-500 hover:text-gray-700',
-                )}
-                onClick={() => setActiveSection(item.id)}
-              >
-                {item.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {/* Table of contents */}
+      <div>
+        <div className="flex items-center mb-6">
+          <Menu className="text-neutral-500 mr-2" size={20} />
+          <h2 className="text-neutral-500 text-sm">On this page</h2>
+        </div>
+
+        <nav className="border-l border-gray-200">
+          <ul className="space-y-4">
+            {/* {richTextHeading.map((tag, index) => {
+              if (tag.type === 'heading') {
+                const text = tag?.children[0]?.text || ''
+                console.log('consoling the text of table of content', text)
+                const headingText =
+                  tag.children?.[0]?.text ||
+                  tag.children?.[0]?.children?.[0]?.text ||
+                  'No table of Content'
+                const slug = headingText.toLowerCase().replace(/\s+/g, '-')
+
+                return (
+                  <li key={index} className="pl-4 border-l-4 border-gray-800 -ml-[1px]">
+                    <a href={`#${slug}`} className="text-gray-800 font-base block text-sm">
+                      {text}
+                    </a>
+                  </li>
+                )
+              }
+              return null
+            })} */}
+
+            {richTextHeading
+              .filter((tag) => tag?.type === 'heading')
+              .map((tag, index) => {
+                const text = extractHeadingText(tag)
+                const slug = text.toLowerCase().replace(/\s+/g, '-')
+                console.log(tag)
+
+                return (
+                  <li key={index} className="pl-4 border-l-4 border-gray-800 -ml-[1px]">
+                    <a href={`#${slug}`} className="text-gray-800 font-base block text-sm">
+                      {text}
+                    </a>
+                  </li>
+                )
+              })}
+          </ul>
+        </nav>
+      </div>
     </div>
   )
 }
-
-export default TableOfContent

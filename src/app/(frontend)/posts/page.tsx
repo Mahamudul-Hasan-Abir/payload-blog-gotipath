@@ -42,7 +42,7 @@ export default async function Page() {
     <div className="pb-24">
       <PageClient />
       <svg
-        className="pointer-events-none absolute inset-[unset] left-1/2 top-0 h-80 w-full -translate-x-1/2 text-neutral-300/50 [mask-image:radial-gradient(70%_60%_at_50%_60%,black_30%,transparent)] max-sm:opacity-50"
+        className="pointer-events-none max-w-5xl mx-auto absolute inset-[unset] left-1/2 top-0 h-80 w-full -translate-x-1/2 text-neutral-300/50 [mask-image:radial-gradient(70%_60%_at_50%_60%,black_30%,transparent)] max-sm:opacity-50"
         width="100%"
         height="100%"
       >
@@ -65,14 +65,25 @@ export default async function Page() {
         </defs>
         <rect fill="url(#grid-«R5drminb»)" width="100%" height="100%"></rect>
       </svg>
-      <div className=" mb-16 relative">
+      {/* <div className=" mb-16 relative">
         <div className="prose dark:prose-invert max-w-none">
           <h1>Introducing Gotipath Integrations</h1>
           <p className="mt-5 text-neutral-500 sm:text-lg">Latest news and updates from Gotipath</p>
         </div>
+      </div> */}
+
+      <div className="lg:mb-16 md:mb-6 mb-4 relative max-w-5xl mx-auto">
+        <div className="prose dark:prose-invert max-w-none">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+            Introducing Gotipath Integrations
+          </h1>
+          <p className="mt-4 text-sm sm:text-base md:text-lg lg:text-xl text-neutral-500">
+            Latest news and updates from Gotipath
+          </p>{' '}
+        </div>
       </div>
 
-      <div className=" mb-8">
+      <div className=" lg:mb-8 mb-2 max-w-5xl mx-auto">
         <PageRange
           collection="posts"
           currentPage={postsRes.page}
@@ -80,13 +91,14 @@ export default async function Page() {
           totalDocs={postsRes.totalDocs}
         />
       </div>
+      <div className=" min-h-[50vh] border-t  border-neutral-200 bg-gradient-to-b from-neutral-50">
+        <CollectionArchive posts={posts} categories={categories} />
 
-      <CollectionArchive posts={posts} categories={categories} />
-
-      <div className="container mt-12">
-        {postsRes.totalPages > 1 && postsRes.page && (
-          <Pagination page={postsRes.page} totalPages={postsRes.totalPages} />
-        )}
+        <div className="container mt-12 max-w-5xl mx-auto">
+          {postsRes.totalPages > 1 && postsRes.page && (
+            <Pagination page={postsRes.page} totalPages={postsRes.totalPages} />
+          )}
+        </div>
       </div>
     </div>
   )
