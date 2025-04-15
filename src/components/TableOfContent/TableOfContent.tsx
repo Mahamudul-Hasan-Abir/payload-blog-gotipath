@@ -4,7 +4,58 @@ import Image from 'next/image'
 export default function TableOfContent(post) {
   const richTextHeading = post?.post?.content?.root?.children || []
   const extractHeadingText = (tag) => {
-    return tag?.children[0]?.text || 'Untitled Heading'
+    return tag?.children[0]?.text || tag?.children[0]?.children[0].text || 'Untitled Heading'
+  }
+
+  const contentTableText = richTextHeading
+    .filter((tag) => tag?.type === 'heading')
+
+    .map((tag, index) => {
+      const text = extractHeadingText(tag)
+      // const slug = text.toLowerCase().replace(/\s+/g, '-')
+      //  const filterdT extractPropertyValues({ data: text, propertyName: 'text' })
+      console.log('text i need', text)
+      return text
+    })
+
+  console.log(
+    'consoling extraction',
+    extractPropertyValues({ data: post?.post?.content?.root, propertyName: 'text' }),
+  )
+
+  console.log('testing Table Text', contentTableText)
+  function extractPropertyValues({ data, propertyName }) {
+    const values = []
+
+    // Recursive function to traverse the nested structure
+    function traverse(obj) {
+      if (!obj || typeof obj !== 'object') return
+
+      // Check if current object has the specified property
+      if (obj[propertyName] !== undefined) {
+        values.push(obj[propertyName])
+      }
+
+      // Traverse children if they exist
+      if (obj.children) {
+        traverse(obj.children)
+      }
+
+      // If it's an array, traverse each item
+      if (Array.isArray(obj)) {
+        obj.forEach((item) => traverse(item))
+      }
+
+      // Traverse all other properties that might be objects
+      Object.keys(obj).forEach((key) => {
+        if (key !== propertyName && key !== 'children' && typeof obj[key] === 'object') {
+          traverse(obj[key])
+        }
+      })
+    }
+
+    traverse(data)
+    return values
   }
 
   return (
@@ -37,42 +88,11 @@ export default function TableOfContent(post) {
 
         <nav className="border-l border-gray-200">
           <ul className="space-y-4">
-            {/* {richTextHeading.map((tag, index) => {
-              if (tag.type === 'heading') {
-                const text = tag?.children[0]?.text || ''
-                console.log('consoling the text of table of content', text)
-                const headingText =
-                  tag.children?.[0]?.text ||
-                  tag.children?.[0]?.children?.[0]?.text ||
-                  'No table of Content'
-                const slug = headingText.toLowerCase().replace(/\s+/g, '-')
-
-                return (
-                  <li key={index} className="pl-4 border-l-4 border-gray-800 -ml-[1px]">
-                    <a href={`#${slug}`} className="text-gray-800 font-base block text-sm">
-                      {text}
-                    </a>
-                  </li>
-                )
-              }
-              return null
-            })} */}
-
-            {richTextHeading
-              .filter((tag) => tag?.type === 'heading')
-              .map((tag, index) => {
-                const text = extractHeadingText(tag)
-                const slug = text.toLowerCase().replace(/\s+/g, '-')
-                console.log(tag)
-
-                return (
-                  <li key={index} className="pl-4 border-l-4 border-gray-800 -ml-[1px]">
-                    <a href={`#${slug}`} className="text-gray-800 font-base block text-sm">
-                      {text}
-                    </a>
-                  </li>
-                )
-              })}
+            {contentTableText.map((content, index) => (
+              <li key={index} className="pl-4 border-l-4 border-gray-800 -ml-[1px]">
+                <a className="text-gray-800 font-base block text-sm">{content}</a>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>
