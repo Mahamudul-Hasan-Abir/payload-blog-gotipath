@@ -76,7 +76,7 @@ export default async function Post({ params: paramsPromise }: Args) {
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
   /* Extra for Dub Hero */
   return (
-    <article className="pt-16 relative overflow-hidden  lg:mx-0 ">
+    <article className="pt-16 relative lg:mx-0">
       <div>
         {/* Main div */}
         <div className="bg-white max-w-5xl mx-auto pb-52 ">
@@ -186,9 +186,11 @@ export default async function Post({ params: paramsPromise }: Args) {
                 </div>
               </div>
             </div>
-            <div className="lg:col-span-1 hidden lg:block sticky ">
-              <TableOfContent post={post}></TableOfContent>
-              <TryAd></TryAd>
+            <div className="lg:col-span-1 hidden lg:block sticky top-28 h-max ">
+              <div>
+                <TableOfContent post={post}></TableOfContent>
+              </div>
+              {/* <TryAd></TryAd> */}
             </div>
           </div>
         </div>
