@@ -1,5 +1,8 @@
+'use client'
+
 import { Menu } from 'lucide-react'
 import Image from 'next/image'
+import { useState } from 'react'
 
 export default function TableOfContent(post) {
   const richTextHeading = post?.post?.content?.root?.children || []
@@ -18,53 +21,35 @@ export default function TableOfContent(post) {
       return text
     })
 
-  console.log(
-    'consoling extraction',
-    extractPropertyValues({ data: post?.post?.content?.root, propertyName: 'text' }),
-  )
+  console.log('consoling extraction')
 
   console.log('testing Table Text', contentTableText)
-  function extractPropertyValues({ data, propertyName }) {
-    const values = []
 
-    // Recursive function to traverse the nested structure
-    function traverse(obj) {
-      if (!obj || typeof obj !== 'object') return
+  const contentTableItems = richTextHeading
+    .filter((tag) => tag?.type === 'heading')
+    .map((tag, index) => {
+      const text = extractHeadingText(tag)
+      // Create a slug that matches the ID format used in the heading component
+      const slug = text
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')
 
-      // Check if current object has the specified property
-      if (obj[propertyName] !== undefined) {
-        values.push(obj[propertyName])
+      return {
+        text,
+        slug,
       }
+    })
 
-      // Traverse children if they exist
-      if (obj.children) {
-        traverse(obj.children)
-      }
-
-      // If it's an array, traverse each item
-      if (Array.isArray(obj)) {
-        obj.forEach((item) => traverse(item))
-      }
-
-      // Traverse all other properties that might be objects
-      Object.keys(obj).forEach((key) => {
-        if (key !== propertyName && key !== 'children' && typeof obj[key] === 'object') {
-          traverse(obj[key])
-        }
-      })
-    }
-
-    traverse(data)
-    return values
-  }
+  const [activeSlug, setActiveSlug] = useState(null)
 
   return (
-    <div className="max-w-md p-6  rounded-lg ">
+    <div className="max-w-md p-6 rounded-lg">
       {/* Author section */}
       <div className="mb-10">
         <h2 className="text-sm text-neutral-500 mb-4">Written by</h2>
         <div className="flex items-center gap-3">
-          <div className="relative size-9 ">
+          <div className="relative size-9">
             <Image
               src="/placeholder.svg?height=64&width=64"
               alt="Arvind Kesh"
@@ -86,11 +71,61 @@ export default function TableOfContent(post) {
           <h2 className="text-neutral-500 text-sm">On this page</h2>
         </div>
 
-        <nav className="border-l border-gray-200">
+        {/* <nav>
           <ul className="space-y-4">
-            {contentTableText.map((content, index) => (
-              <li key={index} className="pl-4 border-l-4 border-gray-800 -ml-[1px]">
-                <a className="text-gray-800 font-base block text-sm">{content}</a>
+            {contentTableItems.map((item) => (
+              <li key={item.slug}>
+                
+
+                <a
+                  href={`#${item.slug}`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    const el = document.getElementById(item.slug)
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                      el.setAttribute('tabindex', '-1')
+                      el.focus()
+                    }
+                    setActiveSlug(item.slug)
+                  }}
+                  className={`block text-sm pl-4 transition-colors border-l-2 ${
+                    activeSlug === item.slug
+                      ? 'border-neutral-800 text-gray-900 font-semibold'
+                      : 'border-gray-200 text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav> */}
+
+        <nav>
+          <ul className="">
+            {contentTableItems.map((item) => (
+              <li key={item.slug}>
+                <a
+                  href={`#${item.slug}`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    const el = document.getElementById(item.slug)
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                      el.setAttribute('tabindex', '-1')
+                      el.focus()
+                    }
+                    setActiveSlug(item.slug)
+                  }}
+                  className={`block text-sm pl-4 py-2 transition-colors border-l-2 ${
+                    activeSlug === item.slug
+                      ? 'border-neutral-800 text-gray-900 font-semibold'
+                      : 'border-gray-200 text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  {item.text}
+                </a>
               </li>
             ))}
           </ul>

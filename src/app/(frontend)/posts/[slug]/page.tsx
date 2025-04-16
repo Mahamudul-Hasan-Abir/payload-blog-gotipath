@@ -53,15 +53,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   const { slug = '' } = await paramsPromise
   const url = '/posts/' + slug
   const post = await queryPostBySlug({ slug })
-  // console.log('consolingSlug', slug)
-  // console.log('RichText', post?.content.root.children)
-  // const richTextHeading = post?.content.root.children
-  // richTextHeading?.map((tags) => {
-  //   if (tags.tag == 'h2') {
-  //     console.log('this one is table component element', tags.tag)
-  //   }
-  // })
-  /* Creating headings */
+
   const headings =
     post?.content?.root?.children
       ?.filter((block: any) => block.tag === 'h2')
