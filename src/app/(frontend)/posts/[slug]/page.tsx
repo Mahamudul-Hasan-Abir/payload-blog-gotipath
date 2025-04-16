@@ -149,7 +149,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 
         <div className="bg-neutral-50 border-t-[1px] border-neutral-200 mt-5">
           <div className="grid grid-cols-4 gap-5 max-w-5xl mx-auto">
-            <div className=" -mb-52 col-span-4 lg:col-span-3  ">
+            <div className=" col-span-4 lg:col-span-3  ">
               {/* Natural div */}
               <div className="max-w-5xl mx-auto -translate-y-52 border-[1px] border-neutral-200 lg:rounded-2xl overflow-hidden bg-white pb-10 mb-10">
                 <div className="relative ">

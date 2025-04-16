@@ -1,8 +1,9 @@
 'use client'
 
 import { Menu } from 'lucide-react'
-import Image from 'next/image'
+import avatar from '../../../public/avatar.jpg'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 export default function TableOfContent(post) {
   const richTextHeading = post?.post?.content?.root?.children || []
@@ -75,7 +76,7 @@ export default function TableOfContent(post) {
         <div className="flex items-center gap-3">
           <div className="relative size-9">
             <Image
-              src="/placeholder.svg?height=64&width=64"
+              src={avatar}
               alt="Arvind Kesh"
               fill
               className="rounded-full border-2 border-yellow-400"
