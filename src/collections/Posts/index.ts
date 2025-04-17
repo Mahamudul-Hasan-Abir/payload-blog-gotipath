@@ -220,6 +220,11 @@ export const Posts: CollectionConfig<'posts'> = {
           name: 'name',
           type: 'text',
         },
+        {
+          name: 'profileImage',
+          type: 'upload',
+          relationTo: 'media',
+        },
       ],
     },
     ...slugField(),

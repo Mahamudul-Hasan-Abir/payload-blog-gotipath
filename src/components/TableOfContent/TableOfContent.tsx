@@ -1,9 +1,8 @@
 'use client'
 
 import { Menu } from 'lucide-react'
-import avatar from '../../../public/avatar.jpg'
+
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 
 export default function TableOfContent(post) {
   const richTextHeading = post?.post?.content?.root?.children || []
@@ -70,25 +69,6 @@ export default function TableOfContent(post) {
 
   return (
     <div className="max-w-md p-6 rounded-lg">
-      {/* Author section */}
-      <div className="mb-10">
-        <h2 className="text-sm text-neutral-500 mb-4">Written by</h2>
-        <div className="flex items-center gap-3">
-          <div className="relative size-9">
-            <Image
-              src={avatar}
-              alt="Arvind Kesh"
-              fill
-              className="rounded-full border-2 border-yellow-400"
-            />
-          </div>
-          <div>
-            <h3 className="whitespace-nowrap text-sm font-medium text-neutral-700">Arvind Kesh</h3>
-            <p className="text-sm text-neutral-500">Content Marketer</p>
-          </div>
-        </div>
-      </div>
-
       {/* Table of contents */}
       <div>
         <div className="flex items-center mb-6">

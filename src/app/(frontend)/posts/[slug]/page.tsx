@@ -22,6 +22,8 @@ import { formatDateTime } from '@/utilities/formatDateTime'
 import { Button } from '@/components/ui/button'
 import TryAd from '@/components/TryAd/TryAd'
 import Marketing from '@/components/Marketing/Marketing'
+import { populateAuthors } from '@/collections/Posts/hooks/populateAuthors'
+import Author from '@/components/Author/Author'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -54,6 +56,8 @@ export default async function Post({ params: paramsPromise }: Args) {
   const url = '/posts/' + slug
   const post = await queryPostBySlug({ slug })
 
+  console.log('finding author data', post)
+
   const headings =
     post?.content?.root?.children
       ?.filter((block: any) => block.tag === 'h2')
@@ -72,9 +76,12 @@ export default async function Post({ params: paramsPromise }: Args) {
   /* Extra for Dub Hero */
   const { categories, heroImage, populatedAuthors, publishedAt, title, subTitle } = post
   // console.log('consoling post for subtitle', post)
+
   const hasAuthors =
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
   /* Extra for Dub Hero */
+  console.log('consoling author data', post.populatedAuthors)
+
   return (
     <article className="pt-16 relative lg:mx-0">
       <div>
@@ -188,6 +195,7 @@ export default async function Post({ params: paramsPromise }: Args) {
             </div>
             <div className="lg:col-span-1 hidden lg:block sticky top-28 h-max ">
               <div>
+                <Author authors={post.populatedAuthors}></Author>
                 <TableOfContent post={post}></TableOfContent>
               </div>
               {/* <TryAd></TryAd> */}

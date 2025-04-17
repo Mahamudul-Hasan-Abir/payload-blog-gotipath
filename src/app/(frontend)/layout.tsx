@@ -16,6 +16,7 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import GlobalHeader from '@/components/Header/Header'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -41,7 +42,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
 
-          <Header />
+          {/* <Header /> */}
+          <GlobalHeader />
           {children}
           <Footer />
         </Providers>

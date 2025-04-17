@@ -6,7 +6,7 @@ import { User } from 'src/payload-types'
 // GraphQL will not return mutated user data that differs from the underlying schema
 // So we use an alternative `populatedAuthors` field to populate the user data, hidden from the admin UI
 export const populateAuthors: CollectionAfterReadHook = async ({ doc, req, req: { payload } }) => {
-  if (doc?.authors && doc?.authors?.length > 0) {
+  if (doc?.authors && doc.authors.length > 0) {
     const authorDocs: User[] = []
 
     for (const author of doc.authors) {
@@ -20,16 +20,44 @@ export const populateAuthors: CollectionAfterReadHook = async ({ doc, req, req: 
         if (authorDoc) {
           authorDocs.push(authorDoc)
         }
-
-        if (authorDocs.length > 0) {
-          doc.populatedAuthors = authorDocs.map((authorDoc) => ({
-            id: authorDoc.id,
-            name: authorDoc.name,
-          }))
-        }
       } catch {
         // swallow error
       }
+    }
+
+    if (authorDocs.length > 0) {
+      const populatedAuthors = []
+
+      for (const authorDoc of authorDocs) {
+        let imageURL: string | null = null
+
+        if (authorDoc.profileImage) {
+          try {
+            const imageDoc = await payload.findByID({
+              collection: 'media',
+              id:
+                typeof authorDoc.profileImage === 'string'
+                  ? authorDoc.profileImage
+                  : authorDoc.profileImage.id,
+              depth: 0,
+            })
+
+            if (imageDoc?.url && typeof imageDoc.url === 'string') {
+              imageURL = imageDoc.url
+            }
+          } catch {
+            // swallow error
+          }
+        }
+
+        populatedAuthors.push({
+          id: authorDoc.id,
+          name: authorDoc.name || 'Anonymous',
+          image: imageURL,
+        })
+      }
+
+      doc.populatedAuthors = populatedAuthors
     }
   }
 

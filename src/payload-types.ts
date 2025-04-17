@@ -247,6 +247,7 @@ export interface Post {
     | {
         id?: string | null;
         name?: string | null;
+        profileImage?: (string | null) | Media;
       }[]
     | null;
   slug?: string | null;
@@ -375,6 +376,7 @@ export interface Category {
 export interface User {
   id: string;
   name?: string | null;
+  profileImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1142,6 +1144,7 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         id?: T;
         name?: T;
+        profileImage?: T;
       };
   slug?: T;
   slugLock?: T;
@@ -1268,6 +1271,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  profileImage?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1538,23 +1542,24 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: string;
-  navItems?:
+  logo: string | Media;
+  nav: {
+    type: 'single' | 'group';
+    text: string;
+    link?: string | null;
+    children?:
+      | {
+          text: string;
+          link: string;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  auth?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: string | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: string | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        text: string;
+        link: string;
         id?: string | null;
       }[]
     | null;
@@ -1595,18 +1600,27 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
-  navItems?:
+  logo?: T;
+  nav?:
     | T
     | {
-        link?:
+        type?: T;
+        text?: T;
+        link?: T;
+        children?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
+              text?: T;
+              link?: T;
+              id?: T;
             };
+        id?: T;
+      };
+  auth?:
+    | T
+    | {
+        text?: T;
+        link?: T;
         id?: T;
       };
   updatedAt?: T;

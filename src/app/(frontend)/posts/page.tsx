@@ -4,9 +4,10 @@ import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
+import React, { cache } from 'react'
 import PageClient from './page.client'
 import { CollectionArchive } from '@/components/CollectionArchive'
+import { draftMode } from 'next/headers'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -37,6 +38,8 @@ export default async function Page() {
 
   const posts = postsRes.docs
   const categories = categoriesRes.docs
+  console.log(posts)
+  // const blogPost = await queryPostBySlug({ slug })
 
   return (
     <div className="pb-24">
@@ -109,3 +112,24 @@ export function generateMetadata(): Metadata {
     title: `Payload Website Template Posts`,
   }
 }
+
+const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
+  const { isEnabled: draft } = await draftMode()
+
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'posts',
+    draft,
+    limit: 1,
+    overrideAccess: draft,
+    pagination: false,
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+  })
+
+  return result.docs?.[0] || null
+})
